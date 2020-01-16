@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+    has_many :microposts, dependent: :destroy
     attr_accessor :remember_token, :activation_token, :reset_token
     before_save :downcase_email
     before_create :create_activation_digest
@@ -29,7 +30,7 @@ class User < ApplicationRecord
     #def authenticated?(remember_token) 
     def authenticated?(attribute, token)
         digest = send("#{attribute}_digest")
-        return false if remember_digest.nil?
+        return false if digest.nil?
         BCrypt::Password.new(remember_digest).is_password?(token)
     end
     
@@ -47,6 +48,11 @@ class User < ApplicationRecord
     def forget 
         update_attribute(:remember_digest, nil)
     end
+    
+    def feed
+        Micropost.where("user_id = ?", id)
+    end
+    
     
     def create_reset_digest
         self.reset_token = User.new_token 
