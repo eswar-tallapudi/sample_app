@@ -5,7 +5,7 @@ Eswar Tallapudi:
     email: eswar@gmail.com
     password_digest: <%= User.digest('password') %>
     activated: true
-activated_at: <%= Time.zone.now %>
+    activated_at: <%= Time.zone.now %>
     
     
 Jaf bazos:
